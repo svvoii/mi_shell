@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_datas.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbocanci <sbocanci@student.42.fr>          +#+  +:+       +#+        */
+/*   By: serge <serge@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 18:25:14 by vloth             #+#    #+#             */
-/*   Updated: 2023/05/24 18:25:38 by sbocanci         ###   ########.fr       */
+/*   Updated: 2023/05/25 08:26:12 by serge            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,15 +66,21 @@ char **ft_split_words(char *str)
 {
 	char	**spl;
 	int		word = 0;
-	int		i = 0;
+	int		i;
 	int		j = 0;
 	int		start = 0;
 
-	while (str[i++])
+	i = -1;
+	while (str[++i])
 	{
+		if ((ft_isspace(str[i + 1]) || str[i + 1] == '\n' || str[i + 1] == '\0')
+			&& (!ft_isspace(str[i]) || str[i] != '\n'))
+			word++; 
+		/*
 		if ((str[i] == ' ' || str[i] == '\t' || str[i] == '\n' || str[i] == '\0')
 			&& (str[i - 1] != ' ' || str[i - 1] != '\t' || str[i - 1] != '\n'))
 			word++; 
+		*/
 	}
 	//printf("words:'%d'\ti:'%d'\n", word, i);
 	spl = (char **)malloc(sizeof(char *) * (word + 1));
@@ -87,12 +93,14 @@ char **ft_split_words(char *str)
 	}
 	i = 0;
 	word = 0;
-	while (str[i])
+	while (str[++i])
 	{
-		while (str[i] && (str[i] == ' ' || str[i] == '\t' || str[i] == '\n'))
+		//while (str[i] && (str[i] == ' ' || str[i] == '\t' || str[i] == '\n'))
+		while (str[i] && (ft_isspace(str[i]) || str[i] == '\n'))
 			i++;
 		start = i;
-		while (str[i] && str[i] != ' ' && str[i] != '\t' && str[i] != '\n')
+		//while (str[i] && str[i] != ' ' && str[i] != '\t' && str[i] != '\n')
+		while (str[i] && (!ft_isspace(str[i]) && str[i] != '\n'))
 			i++;
 		//printf("start: '%d' > i:'%d'\n", start, i);
 		if (i > start)
@@ -105,11 +113,11 @@ char **ft_split_words(char *str)
 				free(spl);
 				return (NULL);
 			}
-			j = 0;
-			while (j < (i - start))
+			j = -1;
+			while (++j < (i - start))
 			{
 				spl[word][j] = str[start + j];
-				j++;
+				//j++;
 			}
 			spl[word][j] = '\0';
 			//printf("w:'%d'\ts:'%d'\t'%s'\n", word, start, &str[start]);
