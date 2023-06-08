@@ -60,19 +60,50 @@ static int	number_of_delimiters(t_redir *redir)
 }
 */
 
+int	ft_create_here_doc(char *delimiter)
+{
+	int		fd;
+	char	*buffer;
+
+	buffer = NULL;
+	fd = open(HERE_DOC_FILE, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	//fd = open(HERE_DOC_FILE, O_CREAT | O_WRONLY | O_TMPFILE, 0644);
+	//fd = open(HERE_DOC_FILE, O_CREAT | O_WRONLY | O_EXCL, 0644);
+	if (fd == -1)
+		printf("Heredoc fd err: '%d'\n", fd);
+	write(1, ">", 1);
+	while (get_next_line(0, &buffer) > 0)
+	{
+		/* we need to handle the case of ctrl^C / ctrl^D */
+		if (!ft_strncmp(buffer, delimiter, ft_strlen(buffer)))
+			break ;
+		else
+		{
+			ft_putstr_fd(buffer, fd);
+			write(fd, "\n", 1);
+		}
+		free(buffer);
+		write(1, ">", 1);
+	}
+	free(buffer);
+	printf("\theredoc, fd:'%d'\n", fd);
+	return (fd);
+}
+
 /* here_doc works fine as it is ! 
-** however, it is necessary to quit properly in case of ctrl^C !! */
+** however, it is necessary to quit properly in case of ctrl^C !! 
 static void	ft_create_here_doc(char *delimiter)
 {
 	int		fd;
 	char	*buffer;
 
 	buffer = NULL;
+	//fd = open(HERE_DOC_FILE, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	//fd = open(HERE_DOC_FILE, O_CREAT | O_WRONLY | O_TMPFILE, 0644);
-	fd = open(HERE_DOC_FILE, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	fd = open(HERE_DOC_FILE, O_CREAT | O_WRONLY | O_EXCL, 0644);
 	while (get_next_line(0, &buffer) > 0)
 	{
-		/* we need to handle the case of ctrl^C / ctrl^D */
+		// we need to handle the case of ctrl^C / ctrl^D 
 		if (!ft_strncmp(buffer, delimiter, ft_strlen(buffer)))
 			break ;
 		else
@@ -98,3 +129,4 @@ void	ft_here_doc(t_cmd *cmd)
 		redir = redir->next;
 	}
 }
+*/

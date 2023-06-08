@@ -40,86 +40,6 @@ void	ft_perror_clean_exit(t_data *data, char *str)
 	exit(-1);
 }
 
-/*
-void	ft_set_redirection_fd(t_cmd *cmd)
-{
-	if (cmd->in_file > 2)
-	{
-		close_if(cmd->fd_in);
-		cmd->fd_in = cmd->in_file;
-	}
-	if (cmd->out_file > 2)
-	{
-		close_if(cmd->fd_out);
-		cmd->fd_out = cmd->out_file;
-	}
-}
-void	ft_set_redirection_fd(t_cmd *cmd)
-{
-	//ft_open(cmd->lredir->begin);
-	if (cmd->redir && cmd->in_file != -1)
-	{
-		close_if(cmd->fd_in);
-		cmd->fd_in = cmd->in_file;
-	}
-	if (cmd->redir && cmd->out_file != -1)
-	{
-		close_if(cmd->fd_out);
-		cmd->fd_out = cmd->out_file;
-	}
-}
-void	ft_exec_command(t_cmd *cmd, t_data *data)
-{
-	if (cmd->redir)
-		ft_set_redirection_fd(cmd);
-	if (cmd->is_built)
-	{
-		ft_builtins(cmd, data->env, data);
-		close_if(cmd->fd_in);
-		close_if(cmd->fd_out);
-		exit(data->exit_return);
-	}
-	else
-	{
-		if (dup2(cmd->fd_in, 0) == -1)
-			ft_perror_clean_exit(data, "(fd_in) Dup2 failure in child.");
-		close_if(cmd->fd_in);
-		if (dup2(cmd->fd_out, 1) == -1)
-			ft_perror_clean_exit(data, "(fd_out) Dup2 failure in child.");
-		close_if(cmd->fd_out);
-		ft_execve(cmd, data);
-	}
-	close_if(cmd->fd_in);
-	close_if(cmd->fd_out);
-	exit(127);
-}
-
-int	ft_pipe_and_fork(t_data * data, t_cmd *cmd, int pipe_fd[2], int prev_fd_in)
-{
-	int		pid;
-
-	if (pipe(pipe_fd) == -1)
-		ft_perror_clean_exit(data, "PIPE ERROR");
-	pid = fork();
-	if (pid == -1)
-		ft_perror_clean_exit(data, "Fork failure");
-	if (pid == 0)
-	{
-		close(pipe_fd[0]);
-		cmd->fd_in = prev_fd_in;
-		cmd->fd_out = pipe_fd[1];
-		ft_exec_command(cmd, data);
-	}
-	else
-	{
-		close(pipe_fd[1]);
-		close_if(prev_fd_in);
-		prev_fd_in = pipe_fd[0];
-	}
-	return (prev_fd_in);
-}
-*/
-
 void	ft_exec_command(t_cmd *cmd, t_data *data)
 {
 	if (cmd->is_built)
@@ -128,36 +48,43 @@ void	ft_exec_command(t_cmd *cmd, t_data *data)
 		exit(data->exit_return);
 	}
 	else
+	{
 		ft_execve(cmd, data);
-	exit(127);
+	}
 }
 
 int	get_cmd_in_fd(t_cmd *cmd)
 {
-	if (cmd->redir)
+	if (cmd->redir && cmd->in_file > 0)
 		return (cmd->in_file);
 	return (cmd->prev_in_fd);
 }
 
-int	get_cmd_out_fd(t_cmd *cmd, int pipe_fd[2])
+int	get_cmd_out_fd(t_cmd *cmd, int pipe_fd_1)
 {
-	if (cmd->redir)
+	if (cmd->redir && cmd->out_file > 0)
 		return (cmd->out_file);
-	return (pipe_fd[1]);
+	else if (cmd->next)
+		return (pipe_fd_1);
+	return (STDOUT_FILENO);
 }
 
 void	ft_fork(t_data *data, t_cmd *cmd, int pipe_fd[2])
 {
-	int	pid;
+	//int	pid;
 
-	pid = fork();
-	if (pid == -1)
+	global.pid = fork();
+	if (global.pid == -1)
 		ft_perror_clean_exit(data, "PIPE ERROR");
-	if (pid == 0)
+	if (global.pid == 0)
 	{
+		printf("child: OK so far, pid:'%d'\n", global.pid);
 		close_if(pipe_fd[0]);
 		cmd->in_fd = get_cmd_in_fd(cmd);
-		cmd->out_fd = get_cmd_out_fd(cmd, pipe_fd);
+		cmd->out_fd = get_cmd_out_fd(cmd, pipe_fd[1]);
+
+		//printf("\tfork, cmd:'%s', in_fd:'%d', out_fd:'%d', prev_fd_in:'%d'\n", cmd->cmd, cmd->in_fd, cmd->out_fd, cmd->prev_in_fd);
+
 		if (dup2(cmd->in_fd, STDIN_FILENO) == -1)
 			ft_perror_clean_exit(data, "(in_fd) Dup2 failure in child.");
 		if (dup2(cmd->out_fd, STDOUT_FILENO) == -1)
@@ -168,7 +95,8 @@ void	ft_fork(t_data *data, t_cmd *cmd, int pipe_fd[2])
 	}
 	else 
 	{
-		cmd->prev_in_fd = pipe_fd[0];
+		if (pipe_fd[0] != -1)
+			cmd->prev_in_fd = pipe_fd[0];
 		close_if(pipe_fd[1]);
 	}
 }
@@ -182,53 +110,28 @@ void	ft_execute_commands(t_data *data)
 	cmd->prev_in_fd = STDIN_FILENO;
 	cmd->in_fd = STDIN_FILENO;
 	cmd->out_fd = STDOUT_FILENO;
+	pipe_fd[0] = -1;
+	pipe_fd[1] = -1;
 	while (cmd)
 	{
-		if (data->cmdIndex->nb_pipe > 0)	
+		//if (data->cmdIndex->nb_pipe > 0)	
+		if (cmd->next)	
 		{
 			if (pipe(pipe_fd) == -1)
+			{
+				printf("error pipe\n");
 				ft_perror_clean_exit(data, "PIPE ERROR");
-			ft_fork(data, cmd, pipe_fd);
+			}
 		}
-		else
-		{
-			ft_fork(data, cmd, pipe_fd);
-		}
+		ft_fork(data, cmd, pipe_fd);
 		cmd = cmd->next;
 	}
+	printf("\texecute_command: prev_fd: '%d'\n", cmd->prev_in_fd);
 	close_if(cmd->prev_in_fd);
 	ft_wait_for_child_processes(data);
 	//ft_close_all_fds(data);
 }
 
-/*
-void	ft_multiple_pipes(t_data *data)
-{
-	t_cmd		*cmd;
-	int		pipe_fd[2];
-	int		prev_pipe_fd_in;
-	int		pid;
-
-	cmd = data->cmdIndex->begin;
-	prev_pipe_fd_in = IN;
-	while (cmd->next)
-	{
-		prev_pipe_fd_in = ft_pipe_and_fork(data, cmd, pipe_fd, prev_pipe_fd_in);
-		cmd = cmd->next;
-	}
-	pid = fork();
-	if (pid == -1)
-		ft_perror_clean_exit(data, "Fork failure");
-	if (pid == 0)
-	{
-		cmd->fd_in = prev_pipe_fd_in;
-		ft_exec_command(cmd, data);
-	}
-	close_if(prev_pipe_fd_in);
-	ft_wait_for_child_processes(data);
-	//ft_close_all_fds(data);
-}
-*/
 void	ft_wait_for_child_processes(t_data *data)
 {
 	int	i;
@@ -249,3 +152,6 @@ void	ft_wait_for_child_processes(t_data *data)
 		i++;
 	}
 }
+
+/*
+*/

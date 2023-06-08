@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbocanci <sbocanci@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sv <sv@student.42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 18:24:10 by vloth             #+#    #+#             */
-/*   Updated: 2023/05/24 16:18:12 by sbocanci         ###   ########.fr       */
+/*   Updated: 2023/06/08 20:46:35 by sv               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@
 # define ERR 2
 # define BUFFER_SIZE_MAX 2048
 # define ERROR_TOKEN "minishell: syntax error near unexpected token `newline'\n"
-# define HERE_DOC_FILE ".mini_here_doc"
+# define HERE_DOC_FILE "/tmp/mini_here_doc_tmp_file"
 
 //global
 typedef struct s_global
@@ -223,6 +223,7 @@ int 	malloc_out(char *str, int *i, t_redirIndex *tmp);
 int 	malloc_in(char *str, int *i, t_redirIndex *tmp);
 int 	malloc_redir(t_data *data);
 
+int		ft_create_here_doc(char *delimiter);
 void	ft_here_doc(t_cmd *cmd);
 /* init_redir.c */
 t_redirIndex	*init_redirI(void);
@@ -249,8 +250,17 @@ int		is_end_redir(char c);
 void 	no_str(char *cmd);
 void	get_file(char *str, int *i);
 void	printTitle(void);
-int 	is_redir_or_cmd(char c);
 
+/* utils_nd.c */
+int 	is_redir_or_cmd(char c);
+bool	space(const char c);
+bool	empty_line(char *str);
+
+/* split_tokens.c */
+char	**parse_readline(char *str);
+char	**split_tokens(char *str);
+
+/* get_next_line.c */
 int		get_next_line(int fd, char **line);
 //ft_pipex
 int		close_if(int fd);
@@ -259,7 +269,7 @@ void	ft_close_all_fds(t_data *data);
 void	ft_perror_clean_exit(t_data *data, char *str);
 void	ft_exec_command(t_cmd *cmd, t_data *data);
 int		get_cmd_in_fd(t_cmd *cmd);
-int		get_cmd_out_fd(t_cmd *cmd, int pipe_fd[2]);
+int		get_cmd_out_fd(t_cmd *cmd, int pipe_fd_1);
 void	ft_fork(t_data *data, t_cmd *cmd, int pipe_fd[2]);
 void	ft_execute_commands(t_data *data);
 void	ft_wait_for_child_processes(t_data *data);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cut_cmd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vloth <vloth@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sv <sv@student.42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 18:24:57 by vloth             #+#    #+#             */
-/*   Updated: 2023/05/13 18:33:00 by vloth            ###   ########.fr       */
+/*   Updated: 2023/06/08 16:47:55 by sv               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,10 @@ void	splitage(char *line, t_cmdIndex *cmdIndex)
 }
 
 // par rapport a la commande regarde sil doit split ou pas
+/* ft_pipeError returns 1 if there is two pipes in a row or '\0' right after the pipe 
+** this behaviour needs to be changed, since nothing is executed.. bash behaves differently 
+** if 2 is returned it means that there is only one cmd without pipes 
+** and 0 means there are pipes and it splits accordingly */
 void	splitOrNot(char *line, t_cmdIndex *cmdIndex)
 {
 	if (ft_pipeError(line) == 1)

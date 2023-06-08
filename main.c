@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbocanci <sbocanci@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sv <sv@student.42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 18:23:57 by vloth             #+#    #+#             */
-/*   Updated: 2023/05/24 16:17:27 by sbocanci         ###   ########.fr       */
+/*   Updated: 2023/06/08 13:49:25 by sv               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,30 +31,35 @@ void	print_cmd(t_data *data)
 /*********************/
 
 //tout est dans le titre de ma fonction
+/* Added 'empty_line' which returns true if the line is empty or only spaces. See 'spaces' in utils_nd */
 void	eternal_loop(t_data *data)
 {
 	char *str;
 
 	while(1)
 	{
+		/* if enter is pressed on an empty line segfault occurs and program exit with an error from sigquit_handler.. */
+		signal_handler();
+
 		str = readline("MS#🤖: ");
-		add_history(str);
+
+		/* add history only if it is not empty */
+		if (!empty_line(str))
+			add_history(str);
+		else
+			continue ;
 		
 		/* debug */
 		printf("\tstr: '%s'\n", str);
 		/********/
 
-		/* I suggest to ft_split the string 'str' in here 'init_data_cmd' 
-		** segfault most likely occurs because of the accessing data which dont exist yet */
 		init_data_cmd(data, str);
 
-		/* debug */
-		//print_cmd(data);
-		/********/
-		// il faut que je clean a partir d'ici
 		splitOrNot(str, data->cmdIndex);
-		//init redirection token
 		malloc_all(data);
+
+		//printf("OK so far\n");
+
 		exec(data);
 		free(str);
 	}

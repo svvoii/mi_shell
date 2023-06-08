@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vloth <vloth@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sv <sv@student.42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 18:24:42 by vloth             #+#    #+#             */
-/*   Updated: 2023/05/13 18:24:43 by vloth            ###   ########.fr       */
+/*   Updated: 2023/06/08 18:57:48 by sv               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,9 @@ void	redirOrNot(t_cmdIndex *index)
 	tmp = index->begin;
 	while (tmp)
 	{
+		/* tmp->cmd here holds the string with all tokens for one cmd
+		** input str separated by '|' split(str, '|') */
+		//printf("\tredirOrNot\tcmd: '%s'\n", tmp->cmd);
 		if (lookIfRedir(tmp->cmd) == 1)
 			tmp->redir = true;
 		else

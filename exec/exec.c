@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbocanci <sbocanci@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sv <sv@student.42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 18:26:49 by vloth             #+#    #+#             */
-/*   Updated: 2023/05/24 16:37:08 by sbocanci         ###   ########.fr       */
+/*   Updated: 2023/06/09 00:12:55 by sv               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,9 @@ void ft_execve(t_cmd *cmd, t_data *data)
 	while (data->path_dirs[++y])
 	{
 		exec = ft_strjoin(ft_strjoin(data->path_dirs[y], "/"), cmd->argv[0]);
+		//printf("execve, path'%s', pid:'%d'\n", exec, global.pid);
 		data->exit_return = execve(exec, cmd->argv, data->envp);
+		//printf("exit_return: '%d'\n", data->exit_return);
 		free(exec);
 	}
 	ft_putstr_fd(cmd->argv[0], 2);
@@ -49,8 +51,8 @@ void exec(t_data *data)
 	spec_built_first(data);
 	if (index->nb_cmd)
 	{
-		//ft_ft_exec(data);
-		ft_execute_commands(data);
+		ft_ft_exec(data);
+		//ft_execute_commands(data);
 		//ft_pipe_exec(data);
 	}
 }

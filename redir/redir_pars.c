@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir_pars.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbocanci <sbocanci@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sv <sv@student.42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 18:24:37 by vloth             #+#    #+#             */
-/*   Updated: 2023/05/24 11:51:18 by sbocanci         ###   ########.fr       */
+/*   Updated: 2023/06/09 00:37:52 by sv               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	malloc_all(t_data *data)
 	initRedirOrnot(data->cmdIndex);
 	malloc_redir(data);
     exec_find_cmd(data);
+	//printf("OK so far\n");
     cut_arg(data);
     is_built(data);
 	/* maybe we can process heredoc here to get its fd before (boucle_redir).. see heredoc.c */
@@ -41,6 +42,12 @@ void    ft_open(t_redir *red)
         red->fd = open(red->file,  O_CREAT | O_WRONLY | O_TRUNC, 0644);
     else if (red->type == R_IN)
         red->fd = open(red->file, O_RDONLY, 0644);
+    else if (red->type == HERD)
+	{
+		red->fd = ft_create_here_doc(red->file);
+		close (red->fd);
+        red->fd = open(HERE_DOC_FILE, O_RDONLY, 0644);
+	}
 	/*
     else if (red->type == HERD)
         red->fd = open(HERE_DOC_FILE, O_RDONLY, 0644);
@@ -69,7 +76,7 @@ void    redir_fd(t_cmd *cmd)
         redir = cmd->lredir->begin;
         while (redir)
         {
-            if (redir->type == R_IN)
+            if (redir->type == R_IN || redir->type == HERD)
             {
                 if (cmd->in_file >= 0)
                     close(cmd->in_file);
