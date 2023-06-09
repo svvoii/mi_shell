@@ -6,7 +6,7 @@
 /*   By: sv <sv@student.42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 18:24:10 by vloth             #+#    #+#             */
-/*   Updated: 2023/06/09 11:43:36 by sv               ###   ########.fr       */
+/*   Updated: 2023/06/09 16:48:06 by sv               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -266,17 +266,6 @@ char	**split_tokens(char *str);
 
 /* get_next_line.c */
 int		get_next_line(int fd, char **line);
-//ft_pipex
-int		close_if(int fd);
-void	ft_close_fds(t_cmd *cmd);
-void	ft_close_all_fds(t_data *data);
-void	ft_perror_clean_exit(t_data *data, char *str);
-void	ft_exec_command(t_cmd *cmd, t_data *data);
-int		get_cmd_in_fd(t_cmd *cmd);
-int		get_cmd_out_fd(t_cmd *cmd, int pipe_fd_1);
-void	ft_fork(t_data *data, t_cmd *cmd, int pipe_fd[2]);
-void	ft_execute_commands(t_data *data);
-void	ft_wait_for_child_processes(t_data *data);
 //Test
 void	wait_all_and_finish(t_data *data, t_cmd *cmds);
 void	exit_process(t_data *data, int *fd);
