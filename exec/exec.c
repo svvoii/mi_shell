@@ -6,7 +6,7 @@
 /*   By: sv <sv@student.42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 18:26:49 by vloth             #+#    #+#             */
-/*   Updated: 2023/06/09 00:12:55 by sv               ###   ########.fr       */
+/*   Updated: 2023/06/09 10:24:41 by sv               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ void spec_built_first(t_data *data)
 	cmd = data->cmdIndex->begin;
 	while (cmd)
 	{
+		//printf("spec_builin: '%s'\n", cmd->argv[0]);
 		if (ft_strcmp(cmd->argv[0], "cd") == 0)
 			cmd->spec_built = 2;
 		else if (ft_strcmp(cmd->argv[0], "exit") == 0)

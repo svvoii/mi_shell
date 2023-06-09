@@ -6,7 +6,7 @@
 /*   By: sv <sv@student.42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 18:24:10 by vloth             #+#    #+#             */
-/*   Updated: 2023/06/08 20:46:35 by sv               ###   ########.fr       */
+/*   Updated: 2023/06/09 11:43:36 by sv               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,18 +25,21 @@
 # include <fcntl.h>
 # include <signal.h>
 # include <errno.h>
+# include <dirent.h>
 # include "libft/libft.h"
 
 # define HERD 7 // <<
 # define APPEND 6 // >>
 # define R_IN 5 // <
 # define R_OUT 4 // > 
-# define IN 0
-# define OUT 1
-# define ERR 2
+# define STDIN 0
+# define STDOUT 1
+# define STDERR 2
 # define BUFFER_SIZE_MAX 2048
 # define ERROR_TOKEN "minishell: syntax error near unexpected token `newline'\n"
 # define HERE_DOC_FILE "/tmp/mini_here_doc_tmp_file"
+# define IS_DIR 126
+# define CMD_UNKNOWN 127
 
 //global
 typedef struct s_global
@@ -161,6 +164,7 @@ int		ft_pwd(t_data *data);
 void	the_arg(int ac, char **av);
 int		malloc_error(char *str);
 pid_t	fork_error(void);
+void	mini_error_file(char *file);
 
 /* EXEC */
 /* exec.c */
@@ -223,7 +227,7 @@ int 	malloc_out(char *str, int *i, t_redirIndex *tmp);
 int 	malloc_in(char *str, int *i, t_redirIndex *tmp);
 int 	malloc_redir(t_data *data);
 
-int		ft_create_here_doc(char *delimiter);
+void	ft_create_here_doc(char *delimiter);
 void	ft_here_doc(t_cmd *cmd);
 /* init_redir.c */
 t_redirIndex	*init_redirI(void);

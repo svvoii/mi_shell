@@ -6,7 +6,7 @@
 /*   By: sv <sv@student.42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 18:23:57 by vloth             #+#    #+#             */
-/*   Updated: 2023/06/08 13:49:25 by sv               ###   ########.fr       */
+/*   Updated: 2023/06/09 12:06:31 by sv               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void	eternal_loop(t_data *data)
 
 	while(1)
 	{
+		global.last_status = 0;
 		/* if enter is pressed on an empty line segfault occurs and program exit with an error from sigquit_handler.. */
 		signal_handler();
 
@@ -50,7 +51,7 @@ void	eternal_loop(t_data *data)
 			continue ;
 		
 		/* debug */
-		printf("\tstr: '%s'\n", str);
+		//printf("\tstr: '%s'\n", str);
 		/********/
 
 		init_data_cmd(data, str);
@@ -58,9 +59,9 @@ void	eternal_loop(t_data *data)
 		splitOrNot(str, data->cmdIndex);
 		malloc_all(data);
 
-		//printf("OK so far\n");
-
-		exec(data);
+		//printf("\tloop. last_status:'%d'\n", global.last_status);
+		if (global.last_status == 0)
+			exec(data);
 		free(str);
 	}
 }

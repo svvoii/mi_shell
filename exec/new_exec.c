@@ -2,7 +2,7 @@
 
 void	redirect_in_out(t_cmd *cmd, int *fd)
 {
-	printf("child, in_file:'%d', out_file:'%d', fd[0]'%d', fd[1]:'%d'\n", cmd->in_file, cmd->out_file, fd[0], fd[1]);
+	//printf("child, in_file:'%d', out_file:'%d', fd[0]'%d', fd[1]:'%d'\n", cmd->in_file, cmd->out_file, fd[0], fd[1]);
 	close(fd[0]);
 	if (cmd->in_file >= 0)
 	{
@@ -53,7 +53,7 @@ int	ft_ft_exec(t_data *data)
 	cmd = data->cmdIndex->begin;
 	while (cmd)
 	{
-		printf("\tnb_pipes: '%d'\n", data->cmdIndex->nb_pipe);
+		//printf("\tnb_pipes: '%d'\n", data->cmdIndex->nb_pipe);
 		if (cmd->spec_built)
 			spec_built(cmd, data);
 		else
@@ -71,7 +71,7 @@ int	ft_ft_exec(t_data *data)
 
 void	parent_process(t_cmd *cmd, int *fd)
 {
-	printf("parent, in_file:'%d', fd[0]:'%d', fd[1]:'%d'\n", cmd->in_file, fd[0], fd[1]);
+	//printf("parent, in_file:'%d', fd[0]:'%d', fd[1]:'%d'\n", cmd->in_file, fd[0], fd[1]);
 	close(fd[1]);
 	if (cmd->in_file >= 0)
 		close(cmd->in_file);

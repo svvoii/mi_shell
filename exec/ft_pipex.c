@@ -118,15 +118,11 @@ void	ft_execute_commands(t_data *data)
 		if (cmd->next)	
 		{
 			if (pipe(pipe_fd) == -1)
-			{
-				printf("error pipe\n");
 				ft_perror_clean_exit(data, "PIPE ERROR");
-			}
 		}
 		ft_fork(data, cmd, pipe_fd);
 		cmd = cmd->next;
 	}
-	printf("\texecute_command: prev_fd: '%d'\n", cmd->prev_in_fd);
 	close_if(cmd->prev_in_fd);
 	ft_wait_for_child_processes(data);
 	//ft_close_all_fds(data);

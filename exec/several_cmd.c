@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   several_cmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vloth <vloth@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sv <sv@student.42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 18:26:00 by vloth             #+#    #+#             */
-/*   Updated: 2023/05/15 22:30:06 by vloth            ###   ########.fr       */
+/*   Updated: 2023/06/09 11:20:03 by sv               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,9 @@ void	ft_exec(t_data *data)
 void	ft_child(t_cmd *cmd, t_envSom *env, int fd[2], t_data *d)
 {
 	if (cmd->next != NULL)
-		dup2(fd[1], OUT);
+		dup2(fd[1], STDOUT);
 	if (cmd->next == NULL)
-		dup2(fd[0], IN);
+		dup2(fd[0], STDIN);
 	close(fd[0]);
 	close(fd[1]);
 	if (ft_builtins(cmd, env, d) == 0)

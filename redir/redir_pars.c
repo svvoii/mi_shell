@@ -6,7 +6,7 @@
 /*   By: sv <sv@student.42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 18:24:37 by vloth             #+#    #+#             */
-/*   Updated: 2023/06/09 00:37:52 by sv               ###   ########.fr       */
+/*   Updated: 2023/06/09 12:06:41 by sv               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,16 @@ void    ft_open(t_redir *red)
         red->fd = open(red->file, O_RDONLY, 0644);
     else if (red->type == HERD)
 	{
-		red->fd = ft_create_here_doc(red->file);
-		close (red->fd);
+		ft_create_here_doc(red->file);
         red->fd = open(HERE_DOC_FILE, O_RDONLY, 0644);
 	}
-	/*
-    else if (red->type == HERD)
-        red->fd = open(HERE_DOC_FILE, O_RDONLY, 0644);
-	*/
+	/* adding error handler: (bash: 'red->lile': No such file or directory) 
+	** the program should return to the eternal_loop !! */
+	if (red->fd == -1 && red->type != HERD)
+	{
+		global.last_status = errno;
+		mini_error_file(red->file);
+	}
 }
 
 //decoupe les fichier de redirection et open les file en en mettant les fd dans ls struct

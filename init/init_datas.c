@@ -40,6 +40,7 @@ void init_data_cmd(t_data *data, char *str)
 	data->argv_readline = parse_readline(str);
 	
 	/* DEBUG */ 
+	/*
 	int i = 0;
 	printf("\tsplit_tokens: ");
 	while (data->argv_readline[i]) {
@@ -47,7 +48,6 @@ void init_data_cmd(t_data *data, char *str)
 		i++;
 	}
 	printf("\n");
-	/*
 	i = 0;
 	printf("\tpath_dirs: ");
 	while (data->path_dirs[i]) {
@@ -55,6 +55,5 @@ void init_data_cmd(t_data *data, char *str)
 		i++;
 	}
 	printf("\n");
-	
 	********/
 }

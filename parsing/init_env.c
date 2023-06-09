@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_env.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vloth <vloth@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sv <sv@student.42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 18:25:04 by vloth             #+#    #+#             */
-/*   Updated: 2023/05/13 18:25:05 by vloth            ###   ########.fr       */
+/*   Updated: 2023/06/09 10:49:32 by sv               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,14 +72,20 @@ void	change_pwd(t_envSom *env)
 }
 
 //mes a jours la varible oldpwd dans mon env
+/* There is a segmentation fault somwhere here
+** FIXED. accessing tmp->name when tmp is null ..*/
 void	change_oldpwd(t_envSom *env, char *oldpwd)
 {
 	t_env *tmp;
 
 	tmp = env->begin;
+	//printf("oldpwd:'%s'\n", oldpwd);
 	while (tmp && ft_strncmp(tmp->name, "OLDPWD=", 7))
+	{
 		tmp = tmp->next;
-	if (tmp->name)
+	}
+	//printf("tmp:'%p'\n", tmp);
+	if (tmp && tmp->name)
 		tmp->name = ft_strjoin("OLDPWD=", oldpwd);
 	else
 		push_env(ft_strjoin("OLDPWD=", oldpwd), env);
