@@ -6,7 +6,7 @@
 /*   By: sbocanci <sbocanci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 18:25:38 by vloth             #+#    #+#             */
-/*   Updated: 2023/05/23 06:30:05 by sbocanci         ###   ########.fr       */
+/*   Updated: 2023/06/13 17:28:13 by sbocanci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ void	free_list(t_cmdIndex *index)
 	free(index);
 	index = NULL;
 }
-*/
 
 void	free_tab(char **str)
 {
@@ -66,6 +65,7 @@ void	free_tab(char **str)
 	}
 	//str = NULL;
 }
+*/
 
 void	ft_free_cmd(t_cmd *cmd, t_redir *redir)
 {
@@ -126,6 +126,6 @@ void	ft_free_all_memory(t_data *data)
 	ft_free_cmd(cmd_index->begin, cmd_index->begin->lredir->begin);
 	if (cmd_index)
 		free(cmd_index);
-	path = data->path_exec;
+	path = data->path_dirs;
 	free_tab(path);
 }

@@ -6,7 +6,7 @@
 /*   By: sbocanci <sbocanci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 18:24:30 by vloth             #+#    #+#             */
-/*   Updated: 2023/06/13 14:23:08 by sbocanci         ###   ########.fr       */
+/*   Updated: 2023/06/13 17:35:23 by sbocanci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	newline(void)
 void	sigint_handler(int sig)
 {
 	//(void)sig;
-	printf("\tsig_handl: '%d', pid: '%d'", sig, global.pid);
+	//printf("\tsig_handl: '%d', pid: '%d'", sig, global.pid);
 	global.signal = sig;
 	write(1, "\n", 1);
 	newline();

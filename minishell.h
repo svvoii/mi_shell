@@ -6,7 +6,7 @@
 /*   By: sbocanci <sbocanci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 18:24:10 by vloth             #+#    #+#             */
-/*   Updated: 2023/06/13 11:41:30 by sbocanci         ###   ########.fr       */
+/*   Updated: 2023/06/13 17:31:01 by sbocanci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,7 @@ typedef struct s_redir
 //datas
 typedef struct s_data
 {
+	char		*line;
 	char		**envp;
 	char		**path_dirs;
 	char		**argv_readline;
@@ -189,6 +190,10 @@ void	ft_exec(t_data *data);
 t_cmd 	*pop_front_dlist(t_cmdIndex *index);
 void	free_list(t_cmdIndex *index);
 void	free_tab(char **str);
+/* ft_free.c */
+void	ft_free_cmd(t_cmd *cmd, t_redir *redir);
+void	ft_free_env(t_envSom *env_som);
+void	ft_free_all_memory(t_data *data);
 
 /* INIT */
 /* init_datdas.c */

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_env.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sv <sv@student.42.fr>                      +#+  +:+       +#+        */
+/*   By: sbocanci <sbocanci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 18:25:04 by vloth             #+#    #+#             */
-/*   Updated: 2023/06/09 10:49:32 by sv               ###   ########.fr       */
+/*   Updated: 2023/06/13 17:47:20 by sbocanci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,13 @@ t_envSom	*init_envSom(void)
 }
 
 //pushback les variable denv dans ma liste
+/* valgrind shows a leak of mem which was created by ft_strdup() */
 void	push_env(char *envp, t_envSom *som)
 {
 	t_env *env;
 	
+	if (!envp)
+		return ;
 	env = malloc(sizeof(t_env));
     if(!env)
 		exit(EXIT_FAILURE);
@@ -64,11 +67,18 @@ void	push_env(char *envp, t_envSom *som)
 void	change_pwd(t_envSom *env)
 {	
 	t_env	*tmp;
+	char	*get_cwd;
 	
 	tmp = env->begin;
 	while (tmp && ft_strncmp(tmp->name, "PWD=", 4))
 		tmp = tmp->next;
-	tmp->name = ft_strjoin("PWD=", getcwd(NULL, 0));
+	if (tmp)
+	{
+		free(tmp->name);
+		get_cwd = getcwd(NULL, 0); 
+		tmp->name = ft_strjoin("PWD=", get_cwd);
+		free(get_cwd);
+	}
 }
 
 //mes a jours la varible oldpwd dans mon env

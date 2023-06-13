@@ -23,6 +23,8 @@ void	init_data(t_data *data, char **en)
 {
 	//signal_handler();
 	printTitle();
+	data->line = NULL;
+	/* strdup en into envp.. ?! */
 	data->envp = en;
 	data->env = init_envp(en);
 	global.pid = 42;

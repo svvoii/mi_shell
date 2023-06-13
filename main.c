@@ -6,7 +6,7 @@
 /*   By: sbocanci <sbocanci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 18:23:57 by vloth             #+#    #+#             */
-/*   Updated: 2023/06/13 15:26:17 by sbocanci         ###   ########.fr       */
+/*   Updated: 2023/06/13 16:42:37by sbocanci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,8 @@ void	eternal_loop(t_data *data)
 		//printf("\tstr: '%s'\n", str);
 		/********/
 
-		//printf("\tloop. last_status:'%d'\n", global.last_status);
 		free(str);
+		//printf("\tloop. last_status:'%d'\n", global.last_status);
 	}
 }
 
@@ -81,6 +81,7 @@ int main(int argc, char **argv, char **envp)
 	eternal_loop(&data);
 	
 	printf("\texit. last_status: '%d'\n", global.last_status);
+	ft_free_env(data.env);
 	rl_clear_history();
 	return (0);
 }

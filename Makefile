@@ -60,6 +60,7 @@ SRC = main.c \
 	  builtins/ft_export.c \
 	  builtins/ft_unset.c \
 	  free/free.c \
+	  free/ft_free.c \
 	  builtins/exec_builtin.c \
 	  redir/init_redir.c \
 	  signaux/signal_handler.c \
