@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sv <sv@student.42.fr>                      +#+  +:+       +#+        */
+/*   By: sbocanci <sbocanci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 18:23:57 by vloth             #+#    #+#             */
-/*   Updated: 2023/06/09 16:52:23 by sv               ###   ########.fr       */
+/*   Updated: 2023/06/13 15:26:17 by sbocanci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,33 +34,37 @@ void	print_cmd(t_data *data)
 /* Added 'empty_line' which returns true if the line is empty or only spaces. See 'spaces' in utils_nd */
 void	eternal_loop(t_data *data)
 {
-	char *str;
+	char	*str;
 
 	while(1)
 	{
 		global.last_status = 0;
-		signal_handler();
 
 		str = readline("MS#🤖: ");
 
 		/* add history only if it is not empty */
-		if (!empty_line(str))
-			add_history(str);
-		else
+		if (!str)
+		{
+			printf("\tbreak");
+			break ;
+		}
+		if (empty_line(str))
 			continue ;
-		
+		else
+		{
+			add_history(str);
+			init_data_cmd(data, str);
+			splitOrNot(str, data->cmdIndex);
+			malloc_all(data);
+
+			if (global.last_status == 0)
+				exec(data);
+		}
 		/* debug */
 		//printf("\tstr: '%s'\n", str);
 		/********/
 
-		init_data_cmd(data, str);
-
-		splitOrNot(str, data->cmdIndex);
-		malloc_all(data);
-
 		//printf("\tloop. last_status:'%d'\n", global.last_status);
-		if (global.last_status == 0)
-			exec(data);
 		free(str);
 	}
 }
@@ -69,9 +73,14 @@ int main(int argc, char **argv, char **envp)
 {
 	t_data data;
 
+	signal(SIGINT, &sigint_handler);
+	signal(SIGQUIT, SIG_IGN);
+
 	the_arg(argc, argv);
 	init_data(&data, envp);
 	eternal_loop(&data);
+	
+	printf("\texit. last_status: '%d'\n", global.last_status);
 	rl_clear_history();
 	return (0);
 }

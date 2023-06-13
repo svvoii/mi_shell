@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal_handler.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sv <sv@student.42.fr>                      +#+  +:+       +#+        */
+/*   By: sbocanci <sbocanci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 18:24:30 by vloth             #+#    #+#             */
-/*   Updated: 2023/06/08 13:08:20 by sv               ###   ########.fr       */
+/*   Updated: 2023/06/13 14:23:08 by sbocanci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,9 @@ void	newline(void)
 
 void	sigint_handler(int sig)
 {
-	(void)sig;
+	//(void)sig;
+	printf("\tsig_handl: '%d', pid: '%d'", sig, global.pid);
+	global.signal = sig;
 	write(1, "\n", 1);
 	newline();
 	if (global.pid == 0)
@@ -39,15 +41,19 @@ void	sigint_handler(int sig)
 void sigquit_handler(int sig)
 {
 	(void)sig;
+	/*
 	ft_putendl_fd("CTRL-D = Segmentation fault", 2);
+	printf("\tsigquit: '%d', SIGSEGV: '%d'\n", sig, SIGSEGV);
+	global.signal = sig;
 	exit(128);
+	*/
 }
 
 void	signal_handler(void)
 {
 	signal(SIGINT, &sigint_handler); // ctrl-C is pressed
 	signal(SIGQUIT, SIG_IGN);
-	signal(SIGSEGV, &sigquit_handler); // ctrl-\ is pressed
+	signal(SIGSEGV, &sigquit_handler);
 }
 
 /*

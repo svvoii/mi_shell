@@ -21,11 +21,13 @@ void 	init_data_cmd(t_data *data);
 //init les datas avant le lancement du shell
 void	init_data(t_data *data, char **en)
 {
+	//signal_handler();
 	printTitle();
 	data->envp = en;
 	data->env = init_envp(en);
 	global.pid = 42;
-	//signal_handler();
+	global.signal = 0;
+	global.last_status = 0;
 }
 
 //init les datas dans la boucle
