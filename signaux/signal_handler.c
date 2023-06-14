@@ -3,23 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   signal_handler.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbocanci <sbocanci@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sv <sv@student.42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 18:24:30 by vloth             #+#    #+#             */
-/*   Updated: 2023/06/13 17:35:23 by sbocanci         ###   ########.fr       */
+/*   Updated: 2023/06/14 22:34:31 by sv               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-/*
-void	newline(void);
-void	sigint_handler(int sig);
-void 	sigquit_handler(int sig);
-void	signal_handler(void);
-*/
 //GESTION DES SIGNAUX
-
 void	newline(void)
 {
 	rl_on_new_line();
@@ -38,24 +31,23 @@ void	sigint_handler(int sig)
 		rl_redisplay();
 }
 
+/*
 void sigquit_handler(int sig)
 {
 	(void)sig;
-	/*
 	ft_putendl_fd("CTRL-D = Segmentation fault", 2);
 	printf("\tsigquit: '%d', SIGSEGV: '%d'\n", sig, SIGSEGV);
 	global.signal = sig;
 	exit(128);
-	*/
 }
 
 void	signal_handler(void)
 {
 	signal(SIGINT, &sigint_handler); // ctrl-C is pressed
 	signal(SIGQUIT, SIG_IGN);
-	signal(SIGSEGV, &sigquit_handler);
+	//signal(SIGSEGV, &sigquit_handler);
 }
-
+*/
 /*
 SIGINT, SIGQUIT, and SIGSEGV are all signals in UNIX-based operating systems 
 that are used to notify a process about certain events or conditions. 

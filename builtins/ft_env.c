@@ -12,17 +12,15 @@
 
 #include "../minishell.h"
 
-
-//execute la cmd env en affichant notre liste chainee 
-int ft_env(t_envSom *env, t_data *data)
+int ft_env(t_data *data)
 {
-	t_env *tmp;
+	int	i;
 
-	tmp = env->begin;
-	while (tmp)
+	i = 0;
+	while (data->m_envp[i])
 	{
-		ft_putendl_fd(tmp->name, 1);
-		tmp = tmp->next;
+		ft_putendl_fd(data->m_envp[i], 1);
+		i++;
 	}
 	data->exit_return = 0; 
 	return (0);

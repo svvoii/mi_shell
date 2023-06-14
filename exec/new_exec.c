@@ -24,7 +24,7 @@ void	child_process(t_data *data, t_cmd *cmd, int *fd)
 	redirect_in_out(cmd, fd);
 	if (cmd->is_built && !cmd->spec_built)
 	{
-		ft_builtins(cmd, data->env, data);
+		ft_builtins(cmd, data);
 		exit(data->exit_return);
 	}
 	ft_execve(cmd, data);
@@ -33,6 +33,8 @@ void	child_process(t_data *data, t_cmd *cmd, int *fd)
 
 void	ft_launch_cmd(t_data *data, t_cmd *cmd, int *fd)
 {
+	/* handle error in case of fork failure 
+	** take fork_error() from gestion.c */
 	global.pid = fork();
 	if (global.pid < 0)
 		return ;

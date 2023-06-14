@@ -49,8 +49,6 @@ SRC = main.c \
 	  parsing/ft_init_list.c \
 	  parsing/parsing.c \
 	  exec/getPath.c \
-	  exec/one_cmd.c \
-	  exec/several_cmd.c \
 	  exec/exec.c \
 	  builtins/pwd.c \
 	  builtins/echo.c \

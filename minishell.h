@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbocanci <sbocanci@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sv <sv@student.42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 18:24:10 by vloth             #+#    #+#             */
-/*   Updated: 2023/06/14 19:04:59 by sbocanci         ###   ########.fr       */
+/*   Updated: 2023/06/14 22:37:54 by sv               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,23 +48,6 @@ typedef struct s_global
 	int		last_status;
 	int		signal;
 }	t_global;
-
-
-//environnement
-typedef struct s_env
-{
-	char *name;
-	struct s_env *next;
-	struct s_env *back;
-} t_env;
-
-//Index environnement
-typedef struct s_envSom
-{
-	int size;
-	struct s_env *begin;
-	struct s_env *end;
-} t_envSom;
 
 //index commande
 typedef struct s_cmdIndex
@@ -115,32 +98,28 @@ typedef struct s_redir
 	struct s_redir *back;
 } t_redir;
 
-
 //datas
 typedef struct s_data
 {
 	char		**envp;
 	char		**m_envp;
 	char		**path_dirs;
-	char		**argv_readline;
-	t_envSom	*env;
+	//char		**argv_readline;
 	t_cmdIndex	*cmdIndex;
 	int			exit_return;
 }	t_data;
-
 
 /* BUILTINS */
 /* cd.c */
 int 	settings_cd(t_cmd *cmd);
 void	ft_cd(t_cmd *cmd, t_data *data);
-//void	ft_cd(t_cmd *cmd, t_envSom *env, t_data *data);
 
 /* echo.c */
 int		ft_echo_n(char *str, t_cmd *cmd);
 int		ft_echo(t_cmd *cmd, t_data *data);
 
 /* exec_builtin.c */
-int		ft_builtins(t_cmd *cmd, t_envSom *env, t_data *data);
+int		ft_builtins(t_cmd *cmd, t_data *data);
 void	is_built(t_data *data);
 void	spec_built(t_cmd *cmd, t_data * data);
 void	spec_built_first(t_data *data);
@@ -149,15 +128,15 @@ void	spec_built_first(t_data *data);
 void	ft_exit(t_cmd *cmd, t_data *data);
 
 /* ft_env.c */
-int 	ft_env(t_envSom *env, t_data *data);
+int 	ft_env(t_data *data);
 int 	have_olpwd(char **envp);
 
 /* ft_export.c */
-int 	ft_export(t_envSom *env, t_cmd *cmd, t_data *data);
+int 	ft_export(t_cmd *cmd, t_data *data);
 
 /* ft_unset.c */
 int 	search_egal(char *str);
-int 	ft_unset(t_envSom *env, t_cmd *cmd, t_data *data);
+int 	ft_unset(t_cmd *cmd, t_data *data);
 
 /* pwd.c */
 int		ft_pwd(t_data *data);
@@ -177,13 +156,9 @@ int		ft_ft_exec(t_data *data);
 
 /* getPath.c */
 char	**ft_getpath(char **m_envp);
-//char	**ft_getpath(t_envSom *env);
-
-/* one_cmd.c */
-int		simple_cmd(t_envSom *env, t_cmd *cmd, t_cmdIndex *c, t_data *d);
 
 /* several_cmd.c */
-void	ft_child(t_cmd *cmd, t_envSom *env, int fd[2], t_data *data);
+void	ft_child(t_cmd *cmd, int fd[2], t_data *data);
 void	ft_parent(int *fd);
 void	ft_exec(t_data *data);
 
@@ -194,14 +169,12 @@ void	free_list(t_cmdIndex *index);
 void	free_tab(char **str);
 /* ft_free.c */
 void	ft_free_cmd(t_cmd *cmd, t_redir *redir);
-void	ft_free_env(t_envSom *env_som);
 void	ft_free_all_memory(t_data *data);
 
 /* INIT */
 /* init_datdas.c */
 void	init_data(t_data *data, char **en);
 void	init_data_cmd(t_data *data);
-//void 	init_data_cmd(t_data *data, char *str);
 
 /* PARSING */
 /* ft_cut_cmd.c */
@@ -219,12 +192,7 @@ void 		pushback_cmd(char *cmd, t_cmdIndex *cmdIndex);
 void 		print_list(t_cmdIndex *cmdIndex);
 
 /* init_env.c */
-//t_envSom	*init_envSom(void);
-//void		push_env(char *envp, t_envSom *som);
-//void		change_pwd(t_envSom *env);
 void		change_pwd(char **envp, char *key);
-//void		change_oldpwd(t_envSom *env, char *oldpwd);
-//t_envSom	*init_envp(char **envp);
 void		init_envp(t_data *data);
 void		add_envp_variable(char **m_envp, char *key);
 
@@ -256,8 +224,6 @@ void 	boucle_redir(t_data *data);
 /* signal_handler.c */
 void	newline(void);
 void	sigint_handler(int sig);
-void 	sigquit_handler(int sig);
-void	signal_handler(void);
 
 /* UTILS */
 /* utils.c */

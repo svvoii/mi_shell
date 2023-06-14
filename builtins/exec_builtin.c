@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_builtin.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbocanci <sbocanci@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sv <sv@student.42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 18:26:18 by vloth             #+#    #+#             */
-/*   Updated: 2023/05/23 05:57:55 by sbocanci         ###   ########.fr       */
+/*   Updated: 2023/06/14 21:49:54 by sv               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,26 +42,26 @@ void is_built(t_data *data)
 	}	
 }
 
-int ft_builtins_sec(t_cmd *cmd, t_envSom *env, t_data * data)
+int ft_builtins_sec(t_cmd *cmd, t_data * data)
 {
 	if (!ft_strcmp(cmd->argv[0], "export"))
 	{
-		ft_export(env, cmd, data);
+		ft_export(cmd, data);
 		return 0;
 	}
 	else if (!ft_strcmp(cmd->argv[0], "unset"))
 	{
-		ft_unset(env, cmd, data);
+		ft_unset(cmd, data);
 		return 0;
 	}
 	return 1;	
 }
 
-int	ft_builtins(t_cmd *cmd, t_envSom *env, t_data *data)
+int	ft_builtins(t_cmd *cmd, t_data *data)
 {
 	if (!ft_strcmp(cmd->argv[0], "env"))
 	{
-		ft_env(env, data);
+		ft_env(data);
 		return 0;
 	}
 	else if (!ft_strcmp(cmd->argv[0], "pwd"))
@@ -74,7 +74,7 @@ int	ft_builtins(t_cmd *cmd, t_envSom *env, t_data *data)
 		ft_echo(cmd, data);
 		return 0;
 	}
-	else if (!ft_builtins_sec(cmd, env, data))
+	else if (!ft_builtins_sec(cmd, data))
 		return 0;
 	return 1;
 }

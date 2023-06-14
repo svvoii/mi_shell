@@ -3,37 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbocanci <sbocanci@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sv <sv@student.42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 18:26:28 by vloth             #+#    #+#             */
-/*   Updated: 2023/06/14 17:32:10 by sbocanci         ###   ########.fr       */
+/*   Updated: 2023/06/14 22:18:00 by sv               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-//execute la cmd export en affichant notre liste chainee mais pas
-//dans lordre alpha, a faire
-//ou rajoute une variable dans notre env
-int ft_export(t_envSom *env, t_cmd *cmd, t_data *data)
+int ft_export(t_cmd *cmd, t_data *data)
 {
-	t_env *tmp;
+	int i;
 
-	tmp = env->begin;
+	i = 0;
 	if (cmd->argv[1] == NULL)
 	{
-		while (tmp)
+		while (data->m_envp[i])
 		{
 			ft_putstr_fd("declare -x ", 1);
-			ft_putstr_fd(tmp->name, 1);
+			ft_putstr_fd(data->m_envp[i], 1);
 			ft_putchar_fd('\n', 1);
-			tmp = tmp->next;
+			i++;
 		}
 	}
 	else
 	{
+		/* need to add this function in init_env.c */
 		add_envp_variable(data->m_envp, cmd->argv[1]);
-		//push_env(cmd->argv[1], env);
 	}
 	data->exit_return = 0;
 	return (0);

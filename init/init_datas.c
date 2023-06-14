@@ -14,10 +14,7 @@
 
 char	**parse_readline(char *str);
 char	**split_tokens(char *str);
-/*
-void	init_data(t_data *data, char **en);
-void 	init_data_cmd(t_data *data);
-*/
+/* DEBUG */
 void	print_2d_array(char	**array)
 {
 	int	i = 0;
@@ -25,16 +22,18 @@ void	print_2d_array(char	**array)
 	while (array[i])
 		printf("'%s'\n", array[i++]);
 }
+/* ***** */
+
 //init les datas avant le lancement du shell
 void	init_data(t_data *data, char **en)
 {
 	//printTitle();
-	/* strdup en into envp.. ?! */
+	/* strdup en into m_envp */
 	data->envp = en;
 	init_envp(data);
 	change_pwd(data->m_envp, "PWD=");
 	//print_2d_array(data->envp);
-	//data->env = init_envp(en);
+
 	global.pid = 42;
 	global.signal = 0;
 	global.last_status = 0;
@@ -47,14 +46,13 @@ void	init_data(t_data *data, char **en)
 void init_data_cmd(t_data *data)
 {
 	data->path_dirs = ft_getpath(data->m_envp); // ft_split(PATH, ':')
-
 	data->cmdIndex = init_cmd(); // createts a node to store beginning/end of t_cmd list
-	data->argv_readline = NULL;
 
-	//data->argv_readline = parse_readline(str);
-	
 	/* DEBUG */ 
 	/*
+	//data->argv_readline = NULL;
+	//data->argv_readline = parse_readline(str);
+	
 	int i = 0;
 	printf("\tsplit_tokens: ");
 	while (data->argv_readline[i]) {

@@ -3,19 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbocanci <sbocanci@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sv <sv@student.42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 18:26:49 by vloth             #+#    #+#             */
-/*   Updated: 2023/06/14 17:24:34 by sbocanci         ###   ########.fr       */
+/*   Updated: 2023/06/14 22:15:53 by sv               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-/*
-void exec(t_cmdIndex *cmd, char **envp, t_envSom *envp_nodes);
-void ft_execve(char *cmd, char **envp);
-*/
 // fonction d'execution
 void ft_execve(t_cmd *cmd, t_data *data)
 {
@@ -45,15 +41,10 @@ void exec(t_data *data)
 	t_cmdIndex *index;
 
 	index = data->cmdIndex;
-	//if (index->begin->redir == true)
-	//	return ;
-	//if (index->nb_cmd)
 	spec_built_first(data);
 	if (index->nb_cmd)
 	{
 		ft_ft_exec(data);
-		//ft_execute_commands(data);
-		//ft_pipe_exec(data);
 	}
 }
 
@@ -63,7 +54,6 @@ void spec_built(t_cmd *cmd, t_data * data)
 		ft_exit(cmd, data);
 	else if (cmd->spec_built == 2)
 		ft_cd(cmd, data);
-		//ft_cd(cmd, data->env, data);
 	else
 		return ;
 }
@@ -75,7 +65,6 @@ void spec_built_first(t_data *data)
 	cmd = data->cmdIndex->begin;
 	while (cmd)
 	{
-		//printf("spec_builin: '%s'\n", cmd->argv[0]);
 		if (ft_strcmp(cmd->argv[0], "cd") == 0)
 			cmd->spec_built = 2;
 		else if (ft_strcmp(cmd->argv[0], "exit") == 0)

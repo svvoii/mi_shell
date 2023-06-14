@@ -3,20 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vloth <vloth@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sv <sv@student.42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 18:25:38 by vloth             #+#    #+#             */
-/*   Updated: 2023/05/13 18:25:39 by vloth            ###   ########.fr       */
+/*   Updated: 2023/06/14 22:19:31 by sv               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-/*
-t_cmd 	*pop_front_dlist(t_cmdIndex *index);
-void	free_list(t_cmdIndex *index);
-void	free_tab(char **str);
-*/
 
 t_cmd *pop_front_dlist(t_cmdIndex *index)
 {
