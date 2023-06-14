@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sv <sv@student.42.fr>                      +#+  +:+       +#+        */
+/*   By: sbocanci <sbocanci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 18:26:49 by vloth             #+#    #+#             */
-/*   Updated: 2023/06/09 10:24:41 by sv               ###   ########.fr       */
+/*   Updated: 2023/06/14 17:24:34 by sbocanci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,8 @@ void spec_built(t_cmd *cmd, t_data * data)
 	if (cmd->spec_built == 1)
 		ft_exit(cmd, data);
 	else if (cmd->spec_built == 2)
-		ft_cd(cmd, data->env, data);
+		ft_cd(cmd, data);
+		//ft_cd(cmd, data->env, data);
 	else
 		return ;
 }

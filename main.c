@@ -53,7 +53,8 @@ void	eternal_loop(t_data *data)
 		else
 		{
 			add_history(str);
-			init_data_cmd(data, str);
+			//init_data_cmd(data, str);
+			init_data_cmd(data);
 			splitOrNot(str, data->cmdIndex);
 			malloc_all(data);
 
@@ -78,10 +79,12 @@ int main(int argc, char **argv, char **envp)
 
 	the_arg(argc, argv);
 	init_data(&data, envp);
+	/* debug from here */
 	eternal_loop(&data);
 	
 	printf("\texit. last_status: '%d'\n", global.last_status);
-	ft_free_env(data.env);
+	//ft_free_env(data.env);
+	free_tab(data.m_envp);
 	rl_clear_history();
 	return (0);
 }

@@ -18,15 +18,23 @@ char	**split_tokens(char *str);
 void	init_data(t_data *data, char **en);
 void 	init_data_cmd(t_data *data);
 */
+void	print_2d_array(char	**array)
+{
+	int	i = 0;
+
+	while (array[i])
+		printf("'%s'\n", array[i++]);
+}
 //init les datas avant le lancement du shell
 void	init_data(t_data *data, char **en)
 {
-	//signal_handler();
-	printTitle();
-	data->line = NULL;
+	//printTitle();
 	/* strdup en into envp.. ?! */
 	data->envp = en;
-	data->env = init_envp(en);
+	init_envp(data);
+	change_pwd(data->m_envp, "PWD=");
+	//print_2d_array(data->envp);
+	//data->env = init_envp(en);
 	global.pid = 42;
 	global.signal = 0;
 	global.last_status = 0;
@@ -35,13 +43,15 @@ void	init_data(t_data *data, char **en)
 //init les datas dans la boucle
 /* Added parse_readline which splits the str into separate tokens/strings 
 ** based on any white space. See 'space' in utils_nd.c */
-void init_data_cmd(t_data *data, char *str)
+//void init_data_cmd(t_data *data, char *str)
+void init_data_cmd(t_data *data)
 {
-	data->path_dirs = ft_getpath(data->env); // ft_split(PATH, ':')
+	data->path_dirs = ft_getpath(data->m_envp); // ft_split(PATH, ':')
+
 	data->cmdIndex = init_cmd(); // createts a node to store beginning/end of t_cmd list
 	data->argv_readline = NULL;
 
-	data->argv_readline = parse_readline(str);
+	//data->argv_readline = parse_readline(str);
 	
 	/* DEBUG */ 
 	/*

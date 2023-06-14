@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sv <sv@student.42.fr>                      +#+  +:+       +#+        */
+/*   By: sbocanci <sbocanci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 18:26:11 by vloth             #+#    #+#             */
-/*   Updated: 2023/06/09 10:50:04 by sv               ###   ########.fr       */
+/*   Updated: 2023/06/14 17:23:16 by sbocanci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,11 @@ int settings_cd(t_cmd *cmd)
 //change les variables denv OLPWD et PWD et execute cd
 // mais je vais devoir enlever quelques erreur possible
 //genre si cest        cd /repertoire
-void	ft_cd(t_cmd *cmd, t_envSom *env, t_data *data)
+//void	ft_cd(t_cmd *cmd, t_envSom *env, t_data *data)
+void	ft_cd(t_cmd *cmd, t_data *data)
 {
 	char *path;
-	char *olpwd = getcwd(NULL, 0);
+	//char *olpwd = getcwd(NULL, 0);
 
 	if (settings_cd(cmd) == 0)
 		path = getenv("HOME");
@@ -42,7 +43,9 @@ void	ft_cd(t_cmd *cmd, t_envSom *env, t_data *data)
 	else
 	{
 		data->exit_return = 0;
-		change_pwd(env);
-		change_oldpwd(env, olpwd);
+		change_pwd(data->m_envp, "PWD=");
+		change_pwd(data->m_envp, "OLDPWD=");
+		//change_pwd(env);
+		//change_oldpwd(env, olpwd);
 	}
 }

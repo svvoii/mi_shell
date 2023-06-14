@@ -6,7 +6,7 @@
 /*   By: sbocanci <sbocanci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 18:25:04 by vloth             #+#    #+#             */
-/*   Updated: 2023/06/13 17:47:20 by sbocanci         ###   ########.fr       */
+/*   Updated: 2023/06/14 19:13:53 by sbocanci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ void		push_env(char *envp, t_envSom *som);
 void		change_pwd(t_envSom *env);
 void		change_oldpwd(t_envSom *env, char *oldpwd);
 t_envSom	*init_envp(char **envp);
-*/
 //init le sommaire de ma double lchainee de env
 t_envSom	*init_envSom(void)
 {
@@ -32,9 +31,10 @@ t_envSom	*init_envSom(void)
 	envSom->size = 0;
 	return (envSom);
 }
+*/
 
 //pushback les variable denv dans ma liste
-/* valgrind shows a leak of mem which was created by ft_strdup() */
+/* valgrind shows a leak of mem which was created by ft_strdup() 
 void	push_env(char *envp, t_envSom *som)
 {
 	t_env *env;
@@ -61,7 +61,88 @@ void	push_env(char *envp, t_envSom *som)
 	}
 	som->size++;
 }
+*/
 
+//mes a jours la varible oldpwd dans mon env
+/* There is a segmentation fault somwhere here
+** FIXED. accessing tmp->name when tmp is null ..
+void	change_oldpwd(t_envSom *env, char *oldpwd)
+{
+	t_env *tmp;
+
+	tmp = env->begin;
+	//printf("oldpwd:'%s'\n", oldpwd);
+	while (tmp && ft_strncmp(tmp->name, "OLDPWD=", 7))
+	{
+		tmp = tmp->next;
+	}
+	//printf("tmp:'%p'\n", tmp);
+	if (tmp && tmp->name)
+		tmp->name = ft_strjoin("OLDPWD=", oldpwd);
+	else
+		push_env(ft_strjoin("OLDPWD=", oldpwd), env);
+}
+*/
+void	init_envp(t_data *data)
+{
+	char	**my_envp;
+	int		count;
+
+	my_envp = (char **)ft_calloc(BUFFER_SIZE_MAX, sizeof(char*));
+	if (!my_envp)
+		return ;
+	count = 0;
+	while (data->envp[count])
+	{
+		my_envp[count] = ft_strdup(data->envp[count]);
+		count++;
+	}
+	my_envp[count] = NULL;
+	data->m_envp = my_envp;
+}
+
+void	change_pwd(char **m_envp, char *key)
+{	
+	char	*get_cwd;
+	int		i;
+	
+	i = 0;
+	while (m_envp[i])
+	{
+		if (ft_strncmp(m_envp[i], key, ft_strlen(key)) == 0)
+			break ;
+		i++;
+	}
+	get_cwd = getcwd(NULL, 0);
+	if (m_envp[i])
+		free(m_envp[i]);
+	m_envp[i] = ft_strjoin(key, get_cwd);
+	free(get_cwd);
+}
+
+void	add_envp_variable(char **envp, char *key)
+{
+	(void)envp;
+	(void)key;
+}
+
+//mes toute les variable dans ma liste
+/*
+t_envSom	*init_envp(char **envp)
+{
+	t_envSom *env;
+	int i;
+
+	i = 0;
+	env = init_envSom();
+	while (envp[i])
+	{
+		push_env(envp[i], env);
+		i++;
+	}
+	change_pwd(env);
+	return (env);
+}
 
 //change la variable pwd dans ma liste de env
 void	change_pwd(t_envSom *env)
@@ -80,40 +161,4 @@ void	change_pwd(t_envSom *env)
 		free(get_cwd);
 	}
 }
-
-//mes a jours la varible oldpwd dans mon env
-/* There is a segmentation fault somwhere here
-** FIXED. accessing tmp->name when tmp is null ..*/
-void	change_oldpwd(t_envSom *env, char *oldpwd)
-{
-	t_env *tmp;
-
-	tmp = env->begin;
-	//printf("oldpwd:'%s'\n", oldpwd);
-	while (tmp && ft_strncmp(tmp->name, "OLDPWD=", 7))
-	{
-		tmp = tmp->next;
-	}
-	//printf("tmp:'%p'\n", tmp);
-	if (tmp && tmp->name)
-		tmp->name = ft_strjoin("OLDPWD=", oldpwd);
-	else
-		push_env(ft_strjoin("OLDPWD=", oldpwd), env);
-}
-
-//mes toute les variable dans ma liste
-t_envSom	*init_envp(char **envp)
-{
-	t_envSom *env;
-	int i;
-
-	i = 0;
-	env = init_envSom();
-	while (envp[i])
-	{
-		push_env(envp[i], env);
-		i++;
-	}
-	change_pwd(env);
-	return (env);
-}
+*/
