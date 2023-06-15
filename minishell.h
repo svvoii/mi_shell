@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sv <sv@student.42.fr>                      +#+  +:+       +#+        */
+/*   By: sbocanci <sbocanci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 18:24:10 by vloth             #+#    #+#             */
-/*   Updated: 2023/06/14 22:37:54 by sv               ###   ########.fr       */
+/*   Updated: 2023/06/15 12:29:34 by sbocanci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,7 +194,7 @@ void 		print_list(t_cmdIndex *cmdIndex);
 /* init_env.c */
 void		change_pwd(char **envp, char *key);
 void		init_envp(t_data *data);
-void		add_envp_variable(char **m_envp, char *key);
+void		add_envp_variable(t_data *data, char *key, char *value);
 
 /* parsing.c */
 void cut_arg(t_data *data);

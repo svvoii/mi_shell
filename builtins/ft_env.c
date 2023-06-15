@@ -17,11 +17,14 @@ int ft_env(t_data *data)
 	int	i;
 
 	i = 0;
-	while (data->m_envp[i])
+	while (data->m_envp[i] != NULL)
 	{
 		ft_putendl_fd(data->m_envp[i], 1);
 		i++;
 	}
+	
+	//printf("\tft_env size: '%d'\n", i);
+
 	data->exit_return = 0; 
 	return (0);
 }

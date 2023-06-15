@@ -3,14 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sv <sv@student.42.fr>                      +#+  +:+       +#+        */
+/*   By: sbocanci <sbocanci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 18:26:49 by vloth             #+#    #+#             */
-/*   Updated: 2023/06/14 22:15:53 by sv               ###   ########.fr       */
+/*   Updated: 2023/06/15 17:34:04 by sbocanci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+/* DEBUG */
+void	ft_print_envp(char **envp)
+{
+	int	i = 0;
+	while (envp[i])
+	{
+		printf("[%d]: '%s'\n", i, envp[i]);
+		i++;
+	}
+}
+/*********/
 
 // fonction d'execution
 void ft_execve(t_cmd *cmd, t_data *data)
@@ -46,6 +58,7 @@ void exec(t_data *data)
 	{
 		ft_ft_exec(data);
 	}
+	//ft_print_envp(data->m_envp);
 }
 
 void spec_built(t_cmd *cmd, t_data * data)
