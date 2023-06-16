@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sv <sv@student.42.fr>                      +#+  +:+       +#+        */
+/*   By: sbocanci <sbocanci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 18:26:31 by vloth             #+#    #+#             */
-/*   Updated: 2023/06/14 22:18:19 by sv               ###   ########.fr       */
+/*   Updated: 2023/06/16 14:57:41 by sbocanci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ int search_egal(char *str)
 	return (-1);
 }
 
+/* As well as export command unset have to be executed out side child process 
+** added it to spec_built_first() in exec.c */
 int ft_unset(t_cmd *cmd, t_data *data)
 {
 	char	**name;

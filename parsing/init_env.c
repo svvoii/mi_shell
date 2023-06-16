@@ -6,7 +6,7 @@
 /*   By: sbocanci <sbocanci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 18:25:04 by vloth             #+#    #+#             */
-/*   Updated: 2023/06/15 17:36:23 by sbocanci         ###   ########.fr       */
+/*   Updated: 2023/06/16 15:06:05 by sbocanci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void	init_envp(t_data *data)
 {
-	//char	**my_envp;
 	int		count;
 
 	data->m_envp = (char **)ft_calloc(BUFFER_SIZE_MAX, sizeof(char*));
@@ -31,13 +30,11 @@ void	init_envp(t_data *data)
 		data->m_envp[count] = NULL;
 		count++;
 	}
-	//printf("\ninit_env. count:'%d', buff:'%d'\n", count, BUFFER_SIZE_MAX);
-	//data->m_envp[count] = NULL;
-	//data->m_envp = my_envp;
 }
 
-/* this adds new key=value pair to the data->m_envp. However, next call of env command wont show it ?! */
-void	add_envp_variable(t_data *data, char *key, char *value)
+/* this adds new key=value pair to the data->m_envp. 
+** also appends VALUE to VAR if 'export VAR+=VALUE' is used. New VAR is created if 'VAR+=' as in bash */
+void	add_envp_variable(t_data *data, char *key, char *value, bool append)
 {
 	int		i;
 	char	*new_var;
@@ -45,28 +42,26 @@ void	add_envp_variable(t_data *data, char *key, char *value)
 	new_var = ft_strjoin(key, value);
 	if (!new_var)
 		return ;
-	i = 0;
-	while (data->m_envp[i])
+	i = -1;
+	while (data->m_envp[++i])
 	{
 		if (ft_strncmp(data->m_envp[i], key, ft_strlen(key)) == 0)
 		{
+			if (append)
+			{
+				free(new_var);
+				new_var = ft_strjoin(data->m_envp[i], value);
+			}
 			free(data->m_envp[i]);
 			data->m_envp[i] = new_var;
 			return ;
 		}
-		//printf("\t[%d] @ '%p'\n", i, data->m_envp[i]);
-		i++;
 	}
 	if (i < BUFFER_SIZE_MAX - 1)
-	{
 		data->m_envp[i] = new_var;
-		data->m_envp[i + 1] = NULL;
-	}
 	else
 		free(new_var);
 }
-//printf("\nadd. key:'%s' = value:'%s', [%d]\n", key, value, i);
-//printf("\nm_envp[%d]:'%s' @ '%p'\n", i, data->m_envp[i], data->m_envp[i]);
 
 void	change_pwd(char **m_envp, char *key)
 {	

@@ -6,7 +6,7 @@
 /*   By: sbocanci <sbocanci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 18:24:10 by vloth             #+#    #+#             */
-/*   Updated: 2023/06/15 12:29:34 by sbocanci         ###   ########.fr       */
+/*   Updated: 2023/06/16 13:59:26 by sbocanci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,7 +194,7 @@ void 		print_list(t_cmdIndex *cmdIndex);
 /* init_env.c */
 void		change_pwd(char **envp, char *key);
 void		init_envp(t_data *data);
-void		add_envp_variable(t_data *data, char *key, char *value);
+void		add_envp_variable(t_data *data, char *key, char *value, bool append);
 
 /* parsing.c */
 void cut_arg(t_data *data);
