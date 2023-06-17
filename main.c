@@ -21,10 +21,15 @@ void	print_cmd(t_data *data)
 
 	while (cmd)
 	{
-		printf("\tcmd:'%s'\tjust_cmd:'%s'\n", cmd->cmd, cmd->just_cmd);
+		printf("\n\tcmd:'%s'\tjust_cmd:'%s', built:'%d', redfir:'%d', meta:'%d'\n", cmd->cmd, cmd->just_cmd, cmd->is_built, cmd->redir, cmd->have_meta);
+		/*
 		i = -1;
 		while (cmd->argv[++i])
 			printf("\targv[%d]: '%s'\n", i, cmd->argv[i]);
+		*/
+		i = -1;
+		while (cmd->tok[++i])
+			printf("\ttok[%d]: '%s'\n", i, cmd->tok[i]);
 		cmd = cmd->next;
 	}
 }
@@ -54,9 +59,16 @@ void	eternal_loop(t_data *data)
 		{
 			add_history(str);
 			init_data_cmd(data);
-			//init_data_cmd(data, str);
-			splitOrNot(str, data->cmdIndex);
+			splitOrNot(str, data->cmdIndex); // after this f() each t_cmd holds part of the line which was split by '|' pipe
+			/* here we split the part of the line from each cmd->cmd str
+			** based on the conditions which consider single and double quotes */
+			ft_parse_readline(data);
+
 			malloc_all(data);
+
+			/* DEBUG */
+			print_cmd(data);
+			/* ***** */
 
 			if (global.last_status == 0)
 				exec(data);

@@ -71,6 +71,7 @@ SRC = main.c \
 	  utils/utils_nd.c \
 	  utils/get_next_line.c \
 	  utils/split_tokens.c \
+	  utils/split_quoted_tokens.c \
 	  parsing/cut.c \
 	  meta/meta.c \
 	  exec/new_exec.c \
@@ -88,6 +89,9 @@ $(NAME): $(OBJS)
 %.o: %.c $(INCL)
 	@$(CC) $(FLAGS) -c $< -o $(<:.c=.o)
 	@printf "$(_CYAN)Generating $(NAME) objects...$(_BLUE)%-33.33s\r$(_NC)" $@
+
+#valgrind:
+#    valgrind --suppressions=readline_leaks_ignore.supp --track-origins=yes --leak-check=full --show-leak-kinds=all ./Minishell
 
 clean:
 	@rm -f $(OBJS)

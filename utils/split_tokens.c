@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_datas.c                                       :+:      :+:    :+:   */
+/*   split_tokens.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sv <sv@student.42.fr>                      +#+  +:+       +#+        */
+/*   By: sbocanci <sbocanci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/13 18:25:14 by vloth             #+#    #+#             */
-/*   Updated: 2023/06/07 21:24:49              ###   ########.fr       */
+/*   Created: 2023/06/17 20:11:17 by sbocanci          #+#    #+#             */
+/*   Updated: 2023/06/17 20:11:20 by sbocanci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,11 @@
 /* This is used in init_data_cmd
 ** it splits the input line into words separated by any kind of whitespace
 */
-char	**parse_readline(char *str)
-{
 	//printf("\tempty_line: '%d' (if true '1' then its empty or spaces)\n", empty_line(str));
 	//if (empty_line(str))
 	//	return (NULL);
+char	**parse_readline(char *str)
+{
 	return (split_tokens(str));
 }
 
@@ -90,10 +90,6 @@ char **split_tokens(char *str)
 	
 	words = 0;
 	words = word_count(str);
-	
-	/* debug */
-	//printf("\t\tspl: words:'%d'\tstr len(i):'%ld'\n", words, ft_strlen(str));
-	/* ***** */
 
 	spl = (char **)malloc(sizeof(char *) * (words + 1));
 	if (!spl)
@@ -106,3 +102,7 @@ char **split_tokens(char *str)
 	spl[words] = (void *)0;
 	return (spl);
 }
+
+	/* debug */
+	//printf("\t\tspl: words:'%d'\tstr len(i):'%ld'\n", words, ft_strlen(str));
+	/* ***** */

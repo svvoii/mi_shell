@@ -28,6 +28,8 @@ void	child_process(t_data *data, t_cmd *cmd, int *fd)
 		exit(data->exit_return);
 	}
 	ft_execve(cmd, data);
+	/* !!! */
+	// would need to free all the memory in child since it is duplicated 
 	exit_process(data, fd);
 }
 

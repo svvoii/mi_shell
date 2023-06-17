@@ -34,6 +34,9 @@ bash: export: `FT_USER+': not a valid identifier
 bash: export: `=': not a valid identifier
 
 ** this is not handled here.. not sure if it is needed ?!
+**
+** Also multiple arguments to export are not handled, only the first is processed.. ?!
+eg: export VAR=value VAR2=value2
 */
 int ft_export(t_cmd *cmd, t_data *data)
 {

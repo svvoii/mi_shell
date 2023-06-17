@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cut_cmd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sv <sv@student.42.fr>                      +#+  +:+       +#+        */
+/*   By: sbocanci <sbocanci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 18:24:57 by vloth             #+#    #+#             */
-/*   Updated: 2023/06/08 16:47:55 by sv               ###   ########.fr       */
+/*   Updated: 2023/06/17 19:42:52 by sbocanci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,11 +78,11 @@ void	splitOrNot(char *line, t_cmdIndex *cmdIndex)
 {
 	if (ft_pipeError(line) == 1)
 		return ;
-	else if (ft_pipeError(line) == 2)
+	else if (ft_pipeError(line) == 2) // no pipes
 	{
 		line = ft_strtrim(line, " ");
 		pushback_cmd(line, cmdIndex);
 	}
-	else if (ft_pipeError(line) == 0)
+	else if (ft_pipeError(line) == 0) // there are pipes in the line
 		splitage(line, cmdIndex);
 }

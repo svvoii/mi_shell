@@ -6,7 +6,7 @@
 /*   By: sbocanci <sbocanci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 18:24:10 by vloth             #+#    #+#             */
-/*   Updated: 2023/06/16 13:59:26 by sbocanci         ###   ########.fr       */
+/*   Updated: 2023/06/17 19:56:36 by sbocanci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ typedef struct s_cmd
 	char		*just_cmd; // si il y a des redirection regarder cette string
 	bool		is_built;
 	char		**argv;
+	char		**tok;
 	bool		redir;
 	int			spec_built;
 	bool		have_meta;
@@ -239,6 +240,9 @@ bool	space(const char c);
 bool	empty_line(char *str);
 
 /* split_tokens.c */
+void	ft_parse_readline(t_data *data);
+char	**split_quoted_tokens(char *str);
+
 char	**parse_readline(char *str);
 char	**split_tokens(char *str);
 
