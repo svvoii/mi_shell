@@ -6,7 +6,7 @@
 /*   By: sbocanci <sbocanci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 18:24:10 by vloth             #+#    #+#             */
-/*   Updated: 2023/06/17 19:56:36 by sbocanci         ###   ########.fr       */
+/*   Updated: 2023/06/19 18:53:31 by sbocanci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,11 +61,11 @@ typedef struct s_cmdIndex
 //liste chainée des commandes
 typedef struct s_cmd
 {
-	char		*cmd; // si il ny a pas de redirection regarder cette string
+	char		*cmd; // this is the input line separated by '|'
 	char		*just_cmd; // si il y a des redirection regarder cette string
 	bool		is_built;
 	char		**argv;
-	char		**tok;
+	char		**quoted_str; // this holds quoted strings if there are any. Null if no quotes in cmd
 	bool		redir;
 	int			spec_built;
 	bool		have_meta;
@@ -105,7 +105,6 @@ typedef struct s_data
 	char		**envp;
 	char		**m_envp;
 	char		**path_dirs;
-	//char		**argv_readline;
 	t_cmdIndex	*cmdIndex;
 	int			exit_return;
 }	t_data;
@@ -239,12 +238,8 @@ int 	is_redir_or_cmd(char c);
 bool	space(const char c);
 bool	empty_line(char *str);
 
-/* split_tokens.c */
-void	ft_parse_readline(t_data *data);
-char	**split_quoted_tokens(char *str);
-
-char	**parse_readline(char *str);
-char	**split_tokens(char *str);
+/* ft_quoted_string.c */
+void	extract_quoted_str(t_data *data);
 
 /* get_next_line.c */
 int		get_next_line(int fd, char **line);

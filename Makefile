@@ -70,8 +70,7 @@ SRC = main.c \
 	  redir/heredoc.c \
 	  utils/utils_nd.c \
 	  utils/get_next_line.c \
-	  utils/split_tokens.c \
-	  utils/split_quoted_tokens.c \
+	  utils/ft_quoted_string.c \
 	  parsing/cut.c \
 	  meta/meta.c \
 	  exec/new_exec.c \

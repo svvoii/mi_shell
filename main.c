@@ -21,15 +21,17 @@ void	print_cmd(t_data *data)
 
 	while (cmd)
 	{
-		printf("\n\tcmd:'%s'\tjust_cmd:'%s', built:'%d', redfir:'%d', meta:'%d'\n", cmd->cmd, cmd->just_cmd, cmd->is_built, cmd->redir, cmd->have_meta);
-		/*
+		printf("\n\tcmd:[%s]\tjust_cmd:[%s], built:[%d], redfir:[%d], meta:[%d]\n", cmd->cmd, cmd->just_cmd, cmd->is_built, cmd->redir, cmd->have_meta);
 		i = -1;
 		while (cmd->argv[++i])
-			printf("\targv[%d]: '%s'\n", i, cmd->argv[i]);
-		*/
+			printf("\targv[%d]: [%s]\n", i, cmd->argv[i]);
+		printf("\n");
 		i = -1;
-		while (cmd->tok[++i])
-			printf("\ttok[%d]: '%s'\n", i, cmd->tok[i]);
+		while (cmd->quoted_str && cmd->quoted_str[++i])
+			printf("\tquoted_str[%d]: [%s]\n", i, cmd->quoted_str[i]);
+		printf("\n");
+		/*
+		*/
 		cmd = cmd->next;
 	}
 }
@@ -60,11 +62,12 @@ void	eternal_loop(t_data *data)
 			add_history(str);
 			init_data_cmd(data);
 			splitOrNot(str, data->cmdIndex); // after this f() each t_cmd holds part of the line which was split by '|' pipe
-			/* here we split the part of the line from each cmd->cmd str
-			** based on the conditions which consider single and double quotes */
-			ft_parse_readline(data);
 
-			malloc_all(data);
+			/* here we split the part of the line from each cmd->cmd (str) into separate single and double quotes.. 
+			** see print_cmd with ex: (echo " $USER" ok '..fillow the white' rabbit "$FT_USER ..") */
+			extract_quoted_str(data);
+
+			malloc_all(data); // initializes redirection if any, splits cmd into argv, arranges file_fds
 
 			/* DEBUG */
 			print_cmd(data);
