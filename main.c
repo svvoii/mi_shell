@@ -22,13 +22,19 @@ void	print_cmd(t_data *data)
 	while (cmd)
 	{
 		printf("\n\tcmd:[%s]\tjust_cmd:[%s], built:[%d], redfir:[%d], meta:[%d]\n", cmd->cmd, cmd->just_cmd, cmd->is_built, cmd->redir, cmd->have_meta);
+		/*
 		i = -1;
 		while (cmd->argv[++i])
 			printf("\targv[%d]: [%s]\n", i, cmd->argv[i]);
 		printf("\n");
+		*/
 		i = -1;
 		while (cmd->quoted_str && cmd->quoted_str[++i])
 			printf("\tquoted_str[%d]: [%s]\n", i, cmd->quoted_str[i]);
+		printf("\n");
+		i = -1;
+		while (cmd->arguments && cmd->arguments[++i])
+			printf("\targuments[%d]: [%s]\n", i, cmd->arguments[i]);
 		printf("\n");
 		/*
 		*/
@@ -63,9 +69,10 @@ void	eternal_loop(t_data *data)
 			init_data_cmd(data);
 			splitOrNot(str, data->cmdIndex); // after this f() each t_cmd holds part of the line which was split by '|' pipe
 
-			/* here we split the part of the line from each cmd->cmd (str) into separate single and double quotes.. 
+			/* here we split the part of the line from each cmd->cmd (str) into separate single and double quotes string which is stored in cmd->quoted_str.. 
 			** see print_cmd with ex: (echo " $USER" ok '..fillow the white' rabbit "$FT_USER ..") */
 			extract_quoted_str(data);
+			parse_arguments_with_quotes(data);
 
 			malloc_all(data); // initializes redirection if any, splits cmd into argv, arranges file_fds
 

@@ -71,6 +71,7 @@ SRC = main.c \
 	  utils/utils_nd.c \
 	  utils/get_next_line.c \
 	  utils/ft_quoted_string.c \
+	  utils/ft_parsing_line_with_quotes.c \
 	  parsing/cut.c \
 	  meta/meta.c \
 	  exec/new_exec.c \

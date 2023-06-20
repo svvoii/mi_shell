@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_quoted_string.c                                 :+:      :+:    :+:   */
+/*   quoted_string.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sbocanci <sbocanci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 20:10:52 by sbocanci          #+#    #+#             */
-/*   Updated: 2023/06/19 17:41:14 by sbocanci         ###   ########.fr       */
+/*   Updated: 2023/06/20 13:08:20 by sbocanci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,12 @@ to check how it works compile:
 gcc test_tok.c ../libft/ft_putstr_fd.c ../libft/ft_strlen.c -lreadline
 
 
+*/
+
 typedef struct s_data_cmd
 {
 	char	**quoted_str;
 }	t_data_cmd;
-*/
 
 void	free_array(char **array)
 {

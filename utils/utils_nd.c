@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_nd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sv <sv@student.42.fr>                      +#+  +:+       +#+        */
+/*   By: sbocanci <sbocanci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 18:24:01 by vloth             #+#    #+#             */
-/*   Updated: 2023/06/08 09:40:52 by sv               ###   ########.fr       */
+/*   Updated: 2023/06/20 16:57:09 by sbocanci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,11 @@ int is_redir_or_cmd(char c)
     if (c == '<' || c == '>')
         return 1;
     return 0;
+}
+
+bool	is_quote(const char c)
+{
+	return (c == '"' || c == '\'');
 }
 
 bool	space(const char c)

@@ -6,7 +6,7 @@
 /*   By: sbocanci <sbocanci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 18:24:10 by vloth             #+#    #+#             */
-/*   Updated: 2023/06/19 18:53:31 by sbocanci         ###   ########.fr       */
+/*   Updated: 2023/06/20 17:04:25 by sbocanci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ typedef struct s_cmd
 	char		*just_cmd; // si il y a des redirection regarder cette string
 	bool		is_built;
 	char		**argv;
+	char		**arguments;
 	char		**quoted_str; // this holds quoted strings if there are any. Null if no quotes in cmd
 	bool		redir;
 	int			spec_built;
@@ -235,11 +236,15 @@ void	printTitle(void);
 
 /* utils_nd.c */
 int 	is_redir_or_cmd(char c);
+bool	is_quote(const char c);
 bool	space(const char c);
 bool	empty_line(char *str);
 
 /* ft_quoted_string.c */
 void	extract_quoted_str(t_data *data);
+
+/* ft_parsing_line_with_quotes.c */
+void	parse_arguments_with_quotes(t_data *data);
 
 /* get_next_line.c */
 int		get_next_line(int fd, char **line);
