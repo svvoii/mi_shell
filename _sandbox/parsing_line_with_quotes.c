@@ -24,16 +24,22 @@ In here we extracts the separate words divided by space and additional condition
 it shall be saved as entire string including the quotes! 
 For example if this is the input of the read_line:
 
-```echo " Hello $USER  "  $FIRST '  follow the white rabbit..  ' THEN.. ```
+input: ```echo $USER Hello ". $USER  .."  $NOT_IN_ENVP '  follow the $USER..  ' THEN..$'USER' .. $"USER"```
 
-this is how it is saved in char **arguments:
+the `char **arguments` will look like this:
 ```
-[0]: [echo]
-[1]: [" Hello $USER  "]
-[2]: [$FIRST]
-[3]: ['  follwo the white rabbit..  ']
-[4]: [THEN..]
-[5]: Null;
+arguments[0]: [echo]
+arguments[1]: [$USER ]
+arguments[2]: [Hello ]
+arguments[3]: [". $USER  .."  ]
+arguments[4]: [$NOT_IN_ENVP ]
+arguments[5]: ['  follow the $USER..  ' ]
+arguments[6]: [THEN..$]
+arguments[7]: ['USER' ]
+arguments[8]: [.. ]
+arguments[9]: [$]
+arguments[10]: ["USER"]
+arguments[11]: NULL;
 ```
 We also extracted quoted parts of the line string and they are stored in 
 char **quoted_str :
@@ -139,7 +145,7 @@ static void ft_non_quoted_str(char **spl, char *str, size_t *index, int *words)
 	while (is_space(str[i]) && str[i])
 		i++;
 	start = i;
-	while (!is_space(str[i]) && str[i] && !is_quote(str[i]))
+	while (!is_space(str[i]) && str[i] && !is_quote(str[i])) // && str[i] != '$')
 		i++;
 	if (i > start)
 	{
@@ -150,7 +156,7 @@ static void ft_non_quoted_str(char **spl, char *str, size_t *index, int *words)
 			spl[*words][j] = str[start + j];
 		spl[*words][j] = '\0';
 		*words += 1;
-		*index = i;
+		*index = i - 1; /* this shall be i - 1 to capture quotes which are write after the $ */
 	}
 }
 
@@ -176,7 +182,7 @@ static void ft_split_words(t_data_cmd *cmd_data, char **spl, char *str, int *wor
 			if (ft_strncmp(str + i, cmd_data->quoted_str[q], quoted_len) == 0)
 			{
 				/* DEBUG */
-				//printf("\t\tstrncmp\n\t\t\t[%s]\n\t\t\t[%s]\n", str + i, cmd_data->quoted_str[q]);
+				printf("\t\tstrncmp\n\t\t\t[%s]\n\t\t\t[%s]\n", str + i, cmd_data->quoted_str[q]);
 				/* *** */
 
 				spl[*words] = ft_strdup(cmd_data->quoted_str[q]);
