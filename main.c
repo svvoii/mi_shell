@@ -21,13 +21,16 @@ void	print_cmd(t_data *data)
 
 	while (cmd)
 	{
-		printf("\n\tcmd:[%s]\tjust_cmd:[%s], built:[%d], redfir:[%d], meta:[%d]\n", cmd->cmd, cmd->just_cmd, cmd->is_built, cmd->redir, cmd->have_meta);
+		printf("\n\tcmd:[%s]\n", cmd->cmd);
+		//printf("\tjust_cmd:[%s], built:[%d], redfir:[%d], meta:[%d]\n", cmd->just_cmd, cmd->is_built, cmd->redir, cmd->have_meta);
+		printf("\toutput:[%s]\n", cmd->output);
 		/*
+		*/
 		i = -1;
 		while (cmd->argv[++i])
 			printf("\targv[%d]: [%s]\n", i, cmd->argv[i]);
 		printf("\n");
-		*/
+		/*
 		i = -1;
 		while (cmd->quoted_str && cmd->quoted_str[++i])
 			printf("\tquoted_str[%d]: [%s]\n", i, cmd->quoted_str[i]);
@@ -36,7 +39,6 @@ void	print_cmd(t_data *data)
 		while (cmd->arguments && cmd->arguments[++i])
 			printf("\targuments[%d]: [%s]\n", i, cmd->arguments[i]);
 		printf("\n");
-		/*
 		*/
 		cmd = cmd->next;
 	}
@@ -73,6 +75,7 @@ void	eternal_loop(t_data *data)
 			** see print_cmd with ex: (echo " $USER" ok '..fillow the white' rabbit "$FT_USER ..") */
 			extract_quoted_str(data);
 			parse_arguments_with_quotes(data);
+			replace_envp_key_with_value(data);
 
 			malloc_all(data); // initializes redirection if any, splits cmd into argv, arranges file_fds
 

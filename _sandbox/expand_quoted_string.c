@@ -6,7 +6,7 @@
 /*   By: sbocanci <sbocanci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 20:11:17 by sbocanci          #+#    #+#             */
-/*   Updated: 2023/06/21 18:32:40 by sbocanci         ###   ########.fr       */
+/*   Updated: 2023/06/22 12:04:36 by sbocanci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,18 +30,27 @@ The code check if there are any $ signs and replace the `$KEY` to `VALUE` from `
 #include <string.h>
 #include <ctype.h>
 
-void expand_envp(char *input, char *output, const char **envp);
+typedef struct s_cmd_data
+{
+	char	input[2048];
+	char	output[2048];
+}	t_cmd_data;
 
-int main(int argc, const char **argv, const char **envp) {
-  char input[2048];
-  char output[2048];
+void	expand_envp(t_cmd_data *cmd, const char **m_envp);
 
-  printf("input: ");
-  fgets(input, 1000, stdin);
+int main(int argc, const char **argv, const char **envp)
+{
+	t_cmd_data	cmd;
 
-  expand_envp(input, output, envp);
+	memset(cmd.input, 0, 2048);
+	memset(cmd.output, 0, 2048);
 
-  printf("Output: %s\n", output);
+	printf("input: ");
+	fgets(cmd.input, 1000, stdin);
+
+	expand_envp(&cmd, envp);
+
+	printf("Output: %s\n", cmd.output);
 }
 
 void	quoted_state(int *is_double_q, int *is_single_q, char q, int *i)
@@ -63,7 +72,7 @@ size_t	ft_strlen(const char *str)
 	return (i);
 }
 
-void	look_up_key_value(char *key, char *value, const char **m_envp)
+int	look_up_key_value(char *key, char *value, const char **m_envp)
 {
 	int j;
 	int	key_len;
@@ -79,6 +88,7 @@ void	look_up_key_value(char *key, char *value, const char **m_envp)
 			value_len = ft_strlen(m_envp[j]) - key_len - 1;
 			strncpy(value, m_envp[j] + key_len + 1, value_len);
 			value[value_len] = '\0';
+			return (value_len);
 			break;
 		}
 		value[0] = '\0';
@@ -86,6 +96,58 @@ void	look_up_key_value(char *key, char *value, const char **m_envp)
 	}
 }
 
+int	get_key_and_look_up_value(t_cmd_data *cmd, int j, int *output_len, const char **m_envp)
+{
+	int key_len;
+	int value_len;
+	char key[2048];
+	char value[2048];
+
+	key_len = 0;
+	value_len = 0;
+	j++;
+	while (isalnum(cmd->input[j]) || cmd->input[j] == '_')
+	{
+		key[key_len++] = cmd->input[j++];
+	}
+	key[key_len] = '\0';
+	//printf("\tkey: [%s], len: [%d]\t", key, key_len);
+
+	value_len = look_up_key_value(key, value, m_envp);
+
+	//printf("\tvalue: [%s], len: [%d]\n", value, value_len);
+
+	strcat(cmd->output, value);
+	*output_len += value_len;
+	return (key_len);
+}
+
+void	expand_envp(t_cmd_data *cmd, const char **m_envp)
+{
+	int i;
+	int output_len = 0;
+	int is_double_quoted = 0;
+	int is_single_quoted = 0;
+
+	i = 0;
+	while (cmd->input[i])
+	{
+		//printf("[%d]: [%c]\n", i, cmd->input[i]);
+		if (cmd->input[i] == '\'' || cmd->input[i] == '\"')
+			quoted_state(&is_double_quoted, &is_single_quoted, cmd->input[i], &i);
+		if (cmd->input[i] == '$' && !is_single_quoted)
+		{
+			i += get_key_and_look_up_value(cmd, i, &output_len, m_envp);
+		}
+		else
+		{
+            cmd->output[output_len++] = cmd->input[i];
+		}
+		i++;
+	}
+}
+
+/*
 void	expand_envp(char *input, char *output, const char **envp)
 {
 	int i;
@@ -93,7 +155,6 @@ void	expand_envp(char *input, char *output, const char **envp)
 	char key[1000];
 	char value[1000];
 	int key_len = 0;
-	int value_len = 0;
 	int output_len = 0;
 	int is_double_quoted = 0;
 	int is_single_quoted = 0;
@@ -102,37 +163,17 @@ void	expand_envp(char *input, char *output, const char **envp)
 	while (input[i])
 	{
 		key_len = 0;
-		value_len = 0;
 		if (input[i] == '\'' || input[i] == '\"')
 			quoted_state(&is_double_quoted, &is_single_quoted, input[i], &i);
-		//printf("[%d]: [%c]\t\"[%d], '[%d]\n", i, input[i], is_double_quoted, is_single_quoted);
 		if (input[i] == '$' && !is_single_quoted)
 		{
 			j = i + 1;
 			while (isalnum(input[j]) || input[j] == '_')
-			{
 				key[key_len++] = input[j++];
-			}
 			key[key_len] = '\0';
-			
 			//printf("\tkey: [%s], len: [%d]\n", key, key_len);
 			look_up_key_value(key, value, envp);
-			/*
-			j = -1;
-			while (envp[++j])
-			{
-				if (strncmp(key, envp[j], key_len) == 0 && envp[j][key_len] == '=')
-				{
-					value_len = strlen(envp[j]) - key_len - 1;
-					strncpy(value, envp[j] + key_len + 1, value_len);
-					value[value_len] = '\0';
-					break;
-				}
-				value[0] = '\0';
-			}
-			*/
-			printf("\tvalue: [%s], len: [%ld]\n", value, ft_strlen(value));
-
+			//printf("\tvalue: [%s], len: [%ld]\n", value, ft_strlen(value));
 			strcat(output, value);
             output_len += ft_strlen(value);
 			i += key_len;
@@ -142,3 +183,4 @@ void	expand_envp(char *input, char *output, const char **envp)
 		i++;
 	}
 }
+*/

@@ -6,7 +6,7 @@
 /*   By: sbocanci <sbocanci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 18:24:01 by vloth             #+#    #+#             */
-/*   Updated: 2023/06/20 16:57:09 by sbocanci         ###   ########.fr       */
+/*   Updated: 2023/06/22 16:24:52 by sbocanci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ bool	is_quote(const char c)
 	return (c == '"' || c == '\'');
 }
 
+/* maybe to add '\0' as well for cases of single $ in the end of the string */
 bool	space(const char c)
 {
 	return (c == ' ' || c == '\t' || c == '\n' || c == '\v' || c == '\r' || c == '\f');

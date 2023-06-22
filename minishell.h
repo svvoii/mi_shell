@@ -6,7 +6,7 @@
 /*   By: sbocanci <sbocanci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 18:24:10 by vloth             #+#    #+#             */
-/*   Updated: 2023/06/20 17:04:25 by sbocanci         ###   ########.fr       */
+/*   Updated: 2023/06/22 12:28:06 by sbocanci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ typedef struct s_cmd
 {
 	char		*cmd; // this is the input line separated by '|'
 	char		*just_cmd; // si il y a des redirection regarder cette string
+	char		output[BUFFER_SIZE_MAX]; // contains expanded cmd, $KEY replased by VALUE where needed 
 	bool		is_built;
 	char		**argv;
 	char		**arguments;
@@ -245,6 +246,9 @@ void	extract_quoted_str(t_data *data);
 
 /* ft_parsing_line_with_quotes.c */
 void	parse_arguments_with_quotes(t_data *data);
+
+/* replace_envp_key_with_value.c */
+void	replace_envp_key_with_value(t_data *data);
 
 /* get_next_line.c */
 int		get_next_line(int fd, char **line);

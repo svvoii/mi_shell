@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir_pars.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sv <sv@student.42.fr>                      +#+  +:+       +#+        */
+/*   By: sbocanci <sbocanci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 18:24:37 by vloth             #+#    #+#             */
-/*   Updated: 2023/06/14 22:14:07 by sv               ###   ########.fr       */
+/*   Updated: 2023/06/22 19:17:31 by sbocanci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ void	malloc_all(t_data *data)
 }
 
 //Open des file parser plus haut, dans lexec si fd = -1 exit le process
+/* The content of the files shall be parsed properly!! the quotes shall be expanded and $KEY replaced with value !! 
+** can use existing process in ft_expand_quoted_string.c and output array in t_cmd.. */
 void    ft_open(t_redir *red)
 {
     if (red->type == APPEND)

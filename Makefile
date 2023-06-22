@@ -45,6 +45,7 @@ SRC = main.c \
 	  libft/ft_putendl_fd.c \
 	  libft/ft_putnbr_fd.c \
 	  libft/ft_split.c \
+	  libft/ft_strcat.c \
 	  parsing/ft_cut_cmd.c \
 	  parsing/ft_init_list.c \
 	  parsing/parsing.c \
@@ -72,6 +73,7 @@ SRC = main.c \
 	  utils/get_next_line.c \
 	  utils/ft_quoted_string.c \
 	  utils/ft_parsing_line_with_quotes.c \
+	  utils/ft_expand_quoted_string.c \
 	  parsing/cut.c \
 	  meta/meta.c \
 	  exec/new_exec.c \

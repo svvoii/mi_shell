@@ -74,7 +74,7 @@ static void ft_non_quoted_str(char **spl, char *str, size_t *index, int *words)
 			spl[*words][j] = str[start + j];
 		spl[*words][j] = '\0';
 		*words += 1;
-		*index = i;
+		*index = i - 1;
 	}
 }
 
